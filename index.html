@@ -94,7 +94,7 @@
             <div class="text-6xl mb-4">🐰 🏁 🐢</div>
             <h3 class="text-2xl font-bold text-gray-800 mb-4">Aprende Japonês correndo!</h3>
             <p class="text-gray-600 mb-6 max-w-md">
-                Éa Tartaruga (Kame). Para avançar, traduz as palavras corretamente. 
+                É a Tartaruga (Kame). Para avançar, traduz as palavras corretamente. 
                 Cuidado: o Coelho (Usagi) é muito rápido! Você consegue ganhar dele?
             </p>
             <div class="flex flex-col gap-3 w-full max-w-xs">
@@ -183,114 +183,8 @@
     <script>
         // Vocabulário do Jogo (Separado por Dificuldade)
         const vocabularios = {
-JavaScript
-const vocabularios = {
-    facil: [
-        { pt: "Coelho", jp: "うさぎ", romaji: "Usagi" },
-        { pt: "Tartaruga", jp: "かめ", romaji: "Kame" },
-        { pt: "Árvore", jp: "き", romaji: "Ki" },
-        { pt: "Rio", jp: "かわ", romaji: "Kawa" },
-        { pt: "Montanha", jp: "やま", romaji: "Yama" },
-        { pt: "Sol", jp: "たいよう", romaji: "Taiyou" },
-        { pt: "Lua", jp: "つき", romaji: "Tsuki" },
-        { pt: "Água", jp: "みず", romaji: "Mizu" },
-        { pt: "Fogo", jp: "ひ", romaji: "Hi" },
-        { pt: "Vento", jp: "かぜ", romaji: "Kaze" },
-        { pt: "Lebre", jp: "のうさぎ", romaji: "Nousagi" },
-        { pt: "Floresta", jp: "もり", romaji: "Mori" },
-        { pt: "Flor", jp: "はな", romaji: "Hana" },
-        { pt: "Grama", jp: "くさ", romaji: "Kusa" },
-        { pt: "Pedra", jp: "いし", romaji: "Ishi" },
-        { pt: "Céu", jp: "そら", romaji: "Sora" },
-        { pt: "Nuvem", jp: "くも", romaji: "Kumo" },
-        { pt: "Pássaro", jp: "とり", romaji: "Tori" },
-        { pt: "Inseto", jp: "むし", romaji: "Mushi" },
-        { pt: "Dia", jp: "ひ", romaji: "Hi" },
-        { pt: "Noite", jp: "よる", romaji: "Yoru" },
-        { pt: "Chão", jp: "つち", romaji: "Tsuchi" },
-        { pt: "Olho", jp: "め", romaji: "Me" },
-        { pt: "Pé", jp: "あし", romaji: "Ashi" },
-        { pt: "Mão", jp: "て", romaji: "Te" },
-        { pt: "Orelha", jp: "みみ", romaji: "Mimi" },
-        { pt: "Pequeno", jp: "ちいさい", romaji: "Chiisai" },
-        { pt: "Grande", jp: "おおきい", romaji: "Ookii" },
-        { pt: "Bom", jp: "いい", romaji: "Ii" },
-        { pt: "Ruim", jp: "わるい", romaji: "Warui" },
-        { pt: "Um", jp: "いち", romaji: "Ichi" },
-        { pt: "Dois", jp: "に", romaji: "Ni" },
-        { pt: "Três", jp: "さん", romaji: "San" },
-        { pt: "Verde", jp: "みどり", romaji: "Midori" }
-    ],
-    medio: [
-        { pt: "Rápido", jp: "はやい", romaji: "Hayai" },
-        { pt: "Devagar", jp: "おそい", romaji: "Osoi" },
-        { pt: "Caminho", jp: "みち", romaji: "Michi" },
-        { pt: "Amigo", jp: "ともだち", romaji: "Tomodachi" },
-        { pt: "Correr", jp: "はしる", romaji: "Hashiru" },
-        { pt: "Dormir", jp: "ねむる", romaji: "Nemuru" },
-        { pt: "Descansar", jp: "やすむ", romaji: "Yasumu" },
-        { pt: "Comer", jp: "たべる", romaji: "Taberu" },
-        { pt: "Beber", jp: "のむ", romaji: "Nomu" },
-        { pt: "Ir", jp: "いく", romaji: "Iku" },
-        { pt: "Começar", jp: "はじめる", romaji: "Hajimeru" },
-        { pt: "Parar", jp: "とまる", romaji: "Tomaru" },
-        { pt: "Acordar", jp: "おきる", romaji: "Okiru" },
-        { pt: "Esperar", jp: "まつ", romaji: "Matsu" },
-        { pt: "Ver", jp: "みる", romaji: "Miru" },
-        { pt: "Ouvir", jp: "きく", romaji: "Kiku" },
-        { pt: "Falar", jp: "はなす", romaji: "Hanasu" },
-        { pt: "Rir", jp: "わらう", romaji: "Warau" },
-        { pt: "Chorar", jp: "なく", romaji: "Naku" },
-        { pt: "Brincar", jp: "あそぶ", romaji: "Asobu" },
-        { pt: "Sentar", jp: "すわる", romaji: "Suwaru" },
-        { pt: "Levantar", jp: "たつ", romaji: "Tatsu" },
-        { pt: "Andar", jp: "あるく", romaji: "Aruku" },
-        { pt: "Perto", jp: "ちかい", romaji: "Chikai" },
-        { pt: "Longe", jp: "とおい", romaji: "Tooi" },
-        { pt: "Hoje", jp: "きょう", romaji: "Kyou" },
-        { pt: "Amanhã", jp: "あした", romaji: "Ashita" },
-        { pt: "Agora", jp: "いま", romaji: "Ima" },
-        { pt: "Depois", jp: "あとで", romaji: "Atode" },
-        { pt: "Muito", jp: "たくさん", romaji: "Takusan" },
-        { pt: "Pouco", jp: "すこし", romaji: "Sukoshi" },
-        { pt: "Alto", jp: "たかい", romaji: "Takai" },
-        { pt: "Baixo", jp: "ひくい", romaji: "Hikui" }
-    ],
-    dificil: [
-        { pt: "Vencer", jp: "かつ", romaji: "Katsu" },
-        { pt: "Perder", jp: "まける", romaji: "Makeru" },
-        { pt: "Fim / Chegada", jp: "おわり", romaji: "Owari" },
-        { pt: "Esforço", jp: "どりょく", romaji: "Doryoku" },
-        { pt: "Apostar", jp: "かける", romaji: "Kakeru" },
-        { pt: "Arrogância", jp: "ごうまん", romaji: "Gouman" },
-        { pt: "Paciência", jp: "にんたい", romaji: "Nintai" },
-        { pt: "Objetivo", jp: "もくひょう", romaji: "Mokuhyou" },
-        { pt: "Promessa", jp: "やくそく", romaji: "Yakusoku" },
-        { pt: "Sucesso", jp: "せいこう", romaji: "Seikou" },
-        { pt: "Corrida", jp: "きょうそう", romaji: "Kyousou" },
-        { pt: "Desafio", jp: "ちょうせん", romaji: "Chousen" },
-        { pt: "Confiança", jp: "じしん", romaji: "Jishin" },
-        { pt: "Orgulho", jp: "ぷらいど", romaji: "Puraido" },
-        { pt: "Humildade", jp: "けんそん", romaji: "Kenson" },
-        { pt: "Perseverança", jp: "こんき", romaji: "Konki" },
-        { pt: "Arrependimento", jp: "こうかい", romaji: "Koukai" },
-        { pt: "Lição", jp: "きょうくん", romaji: "Kyoukun" },
-        { pt: "Moral", jp: "どうとく", romaji: "Doutoku" },
-        { pt: "Subestimar", jp: "かろんじる", romaji: "Karonjiru" },
-        { pt: "Passo a passo", jp: "ちゃくじつ", romaji: "Chakujitsu" },
-        { pt: "Silêncio", jp: "しずか", romaji: "Shizuka" },
-        { pt: "Barulho", jp: "おと", romaji: "Oto" },
-        { pt: "Início", jp: "はじめ", romaji: "Hajime" },
-        { pt: "Meio", jp: "ちゅうかん", romaji: "Chuukan" },
-        { pt: "Decidir", jp: "きめる", romaji: "Kimeru" },
-        { pt: "Ganhar", jp: "える", romaji: "Eru" },
-        { pt: "Alcançar", jp: "とどく", romaji: "Todoku" },
-        { pt: "Continuar", jp: "つづける", romaji: "Tsuzukeru" },
-        { pt: "Desistir", jp: "あきらめる", romaji: "Akirameru" },
-        { pt: "Coragem", jp: "ゆうき", romaji: "Yuuki" },
-        { pt: "Sorte", jp: "うん", romaji: "Un" },
-        { pt: "Destino", jp: "うんめい", romaji: "Unmei" }
-    ]
+
+            
 };
 
         // Variáveis de Estado
@@ -528,4 +422,5 @@ const vocabularios = {
     </script>
 </body>
 </html>
+
 
