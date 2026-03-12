@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usagi to Kame - Aprenda Japonês</title>
+    <title>Usagi to Kame - Aprende Japonês</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -80,22 +80,22 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- Container Principal -->
+    <!-- Contentor Principal -->
     <div class="max-w-3xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-white">
         
-        <!-- Header -->
+        <!-- Cabeçalho -->
         <div class="bg-blue-600 text-white text-center py-4 relative">
             <h1 class="text-3xl font-black tracking-wider">うさぎ と かめ</h1>
             <h2 class="text-xl font-bold opacity-90">A Lebre e a Tartaruga</h2>
         </div>
 
-        <!-- Tela de Início -->
+        <!-- Ecrã de Início -->
         <div id="screen-start" class="p-8 text-center flex flex-col items-center">
             <div class="text-6xl mb-4">🐰 🏁 🐢</div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">Aprenda Japonês Correndo!</h3>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Aprende Japonês correndo!</h3>
             <p class="text-gray-600 mb-6 max-w-md">
-                Você é a Tartaruga (Kame). Para avançar, traduza as palavras corretamente. 
-                Cuidado: o Coelho (Usagi) é muito rápido, mas pode ser que ele pare para tirar uma soneca!
+                Éa Tartaruga (Kame). Para avançar, traduz as palavras corretamente. 
+                Cuidado: o Coelho (Usagi) é muito rápido! Você consegue ganhar dele?
             </p>
             <div class="flex flex-col gap-3 w-full max-w-xs">
                 <button onclick="startGame('facil')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <!-- Tela do Jogo -->
+        <!-- Ecrã do Jogo -->
         <div id="screen-game" class="hidden flex flex-col">
             
             <!-- Pista de Corrida -->
@@ -130,16 +130,16 @@
                 </div>
             </div>
 
-            <!-- Status do Coelho -->
+            <!-- Estado do Coelho -->
             <div id="usagi-status" class="text-center py-2 font-bold text-red-500 bg-red-50">
-                O coelho está correndo rápido! 🏃💨
+                O coelho acordou desesperado! 🏃💨
             </div>
 
             <!-- Quiz -->
             <div class="p-6 bg-gray-50 flex-grow flex flex-col justify-center border-t-2 border-gray-100 relative">
                 
                 <!-- Botão Toggle Romaji -->
-                <div class="absolute top-4 right-4">
+                <div class="absolute top-4 right-4 z-20">
                     <label class="flex items-center cursor-pointer text-sm text-gray-500 font-bold bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200 hover:bg-gray-50 transition">
                         <input type="checkbox" id="romaji-toggle" checked onchange="toggleRomaji()" class="mr-2 w-4 h-4 accent-blue-600">
                         Romaji
@@ -157,15 +157,15 @@
             </div>
         </div>
 
-        <!-- Tela de Fim -->
+        <!-- Ecrã de Fim -->
         <div id="screen-end" class="hidden p-8 text-center flex flex-col items-center bg-yellow-50">
             <div id="end-icon" class="text-7xl mb-4">🏆</div>
-            <h2 id="end-title" class="text-4xl font-black text-gray-800 mb-2">Você Venceu!</h2>
-            <p id="end-message" class="text-xl text-gray-600 mb-8">Devagar e sempre vence a corrida.</p>
+            <h2 id="end-title" class="text-4xl font-black text-gray-800 mb-2">Venceu!</h2>
+            <p id="end-message" class="text-xl text-gray-600 mb-8">Devagar e sempre</p>
             
             <div class="bg-white p-4 rounded-xl shadow-md mb-8 w-full max-w-sm">
-                <p class="font-bold text-gray-700">Palavras revisadas:</p>
-                <p class="text-sm text-gray-500 mt-2">Continue praticando para memorizar o Hiragana e o Romaji!</p>
+                <p class="font-bold text-gray-700">Que pena!</p>
+                <p class="text-sm text-gray-500 mt-2">Continua a praticar para memorizar o Hiragana!</p>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4">
@@ -183,43 +183,119 @@
     <script>
         // Vocabulário do Jogo (Separado por Dificuldade)
         const vocabularios = {
-            facil: [
-                { pt: "Coelho", jp: "うさぎ", romaji: "Usagi" },
-                { pt: "Tartaruga", jp: "かめ", romaji: "Kame" },
-                { pt: "Árvore", jp: "き", romaji: "Ki" },
-                { pt: "Rio", jp: "かわ", romaji: "Kawa" },
-                { pt: "Montanha", jp: "やま", romaji: "Yama" },
-                { pt: "Sol", jp: "たいよう", romaji: "Taiyou" },
-                { pt: "Lua", jp: "つき", romaji: "Tsuki" },
-                { pt: "Água", jp: "みず", romaji: "Mizu" },
-                { pt: "Fogo", jp: "ひ", romaji: "Hi" },
-                { pt: "Vento", jp: "かぜ", romaji: "Kaze" }
-            ],
-            medio: [
-                { pt: "Rápido", jp: "はやい", romaji: "Hayai" },
-                { pt: "Devagar", jp: "おそい", romaji: "Osoi" },
-                { pt: "Caminho", jp: "みち", romaji: "Michi" },
-                { pt: "Amigo", jp: "ともだち", romaji: "Tomodachi" },
-                { pt: "Correr", jp: "はしる", romaji: "Hashiru" },
-                { pt: "Dormir", jp: "ねむる", romaji: "Nemuru" },
-                { pt: "Descansar", jp: "やすむ", romaji: "Yasumu" },
-                { pt: "Comer", jp: "たべる", romaji: "Taberu" },
-                { pt: "Beber", jp: "のむ", romaji: "Nomu" },
-                { pt: "Ir", jp: "いく", romaji: "Iku" }
-            ],
-            dificil: [
-                { pt: "Vencer", jp: "かつ", romaji: "Katsu" },
-                { pt: "Perder", jp: "まける", romaji: "Makeru" },
-                { pt: "Fim / Chegada", jp: "おわり", romaji: "Owari" },
-                { pt: "Esforço", jp: "どりょく", romaji: "Doryoku" },
-                { pt: "Apostar", jp: "かける", romaji: "Kakeru" },
-                { pt: "Arrogância", jp: "ごうまん", romaji: "Gouman" },
-                { pt: "Paciência", jp: "にんたい", romaji: "Nintai" },
-                { pt: "Objetivo", jp: "もくひょう", romaji: "Mokuhyou" },
-                { pt: "Promessa", jp: "やくそく", romaji: "Yakusoku" },
-                { pt: "Sucesso", jp: "せいこう", romaji: "Seikou" }
-            ]
-        };
+Com certeza! Ampliei a lista para 100 palavras divididas entre os três níveis, focando bastante nos elementos da natureza, ações da corrida e os sentimentos envolvidos na história da lebre e da tartaruga.
+
+Aqui está o objeto pronto para você copiar:
+
+JavaScript
+const vocabularios = {
+    facil: [
+        { pt: "Coelho", jp: "うさぎ", romaji: "Usagi" },
+        { pt: "Tartaruga", jp: "かめ", romaji: "Kame" },
+        { pt: "Árvore", jp: "き", romaji: "Ki" },
+        { pt: "Rio", jp: "かわ", romaji: "Kawa" },
+        { pt: "Montanha", jp: "やま", romaji: "Yama" },
+        { pt: "Sol", jp: "たいよう", romaji: "Taiyou" },
+        { pt: "Lua", jp: "つき", romaji: "Tsuki" },
+        { pt: "Água", jp: "みず", romaji: "Mizu" },
+        { pt: "Fogo", jp: "ひ", romaji: "Hi" },
+        { pt: "Vento", jp: "かぜ", romaji: "Kaze" },
+        { pt: "Lebre", jp: "のうさぎ", romaji: "Nousagi" },
+        { pt: "Floresta", jp: "もり", romaji: "Mori" },
+        { pt: "Flor", jp: "はな", romaji: "Hana" },
+        { pt: "Grama", jp: "くさ", romaji: "Kusa" },
+        { pt: "Pedra", jp: "いし", romaji: "Ishi" },
+        { pt: "Céu", jp: "そら", romaji: "Sora" },
+        { pt: "Nuvem", jp: "くも", romaji: "Kumo" },
+        { pt: "Pássaro", jp: "とり", romaji: "Tori" },
+        { pt: "Inseto", jp: "むし", romaji: "Mushi" },
+        { pt: "Dia", jp: "ひ", romaji: "Hi" },
+        { pt: "Noite", jp: "よる", romaji: "Yoru" },
+        { pt: "Chão", jp: "つち", romaji: "Tsuchi" },
+        { pt: "Olho", jp: "め", romaji: "Me" },
+        { pt: "Pé", jp: "あし", romaji: "Ashi" },
+        { pt: "Mão", jp: "て", romaji: "Te" },
+        { pt: "Orelha", jp: "みみ", romaji: "Mimi" },
+        { pt: "Pequeno", jp: "ちいさい", romaji: "Chiisai" },
+        { pt: "Grande", jp: "おおきい", romaji: "Ookii" },
+        { pt: "Bom", jp: "いい", romaji: "Ii" },
+        { pt: "Ruim", jp: "わるい", romaji: "Warui" },
+        { pt: "Um", jp: "いち", romaji: "Ichi" },
+        { pt: "Dois", jp: "に", romaji: "Ni" },
+        { pt: "Três", jp: "さん", romaji: "San" },
+        { pt: "Verde", jp: "みどり", romaji: "Midori" }
+    ],
+    medio: [
+        { pt: "Rápido", jp: "はやい", romaji: "Hayai" },
+        { pt: "Devagar", jp: "おそい", romaji: "Osoi" },
+        { pt: "Caminho", jp: "みち", romaji: "Michi" },
+        { pt: "Amigo", jp: "ともだち", romaji: "Tomodachi" },
+        { pt: "Correr", jp: "はしる", romaji: "Hashiru" },
+        { pt: "Dormir", jp: "ねむる", romaji: "Nemuru" },
+        { pt: "Descansar", jp: "やすむ", romaji: "Yasumu" },
+        { pt: "Comer", jp: "たべる", romaji: "Taberu" },
+        { pt: "Beber", jp: "のむ", romaji: "Nomu" },
+        { pt: "Ir", jp: "いく", romaji: "Iku" },
+        { pt: "Começar", jp: "はじめる", romaji: "Hajimeru" },
+        { pt: "Parar", jp: "とまる", romaji: "Tomaru" },
+        { pt: "Acordar", jp: "おきる", romaji: "Okiru" },
+        { pt: "Esperar", jp: "まつ", romaji: "Matsu" },
+        { pt: "Ver", jp: "みる", romaji: "Miru" },
+        { pt: "Ouvir", jp: "きく", romaji: "Kiku" },
+        { pt: "Falar", jp: "はなす", romaji: "Hanasu" },
+        { pt: "Rir", jp: "わらう", romaji: "Warau" },
+        { pt: "Chorar", jp: "なく", romaji: "Naku" },
+        { pt: "Brincar", jp: "あそぶ", romaji: "Asobu" },
+        { pt: "Sentar", jp: "すわる", romaji: "Suwaru" },
+        { pt: "Levantar", jp: "たつ", romaji: "Tatsu" },
+        { pt: "Andar", jp: "あるく", romaji: "Aruku" },
+        { pt: "Perto", jp: "ちかい", romaji: "Chikai" },
+        { pt: "Longe", jp: "とおい", romaji: "Tooi" },
+        { pt: "Hoje", jp: "きょう", romaji: "Kyou" },
+        { pt: "Amanhã", jp: "あした", romaji: "Ashita" },
+        { pt: "Agora", jp: "いま", romaji: "Ima" },
+        { pt: "Depois", jp: "あとで", romaji: "Atode" },
+        { pt: "Muito", jp: "たくさん", romaji: "Takusan" },
+        { pt: "Pouco", jp: "すこし", romaji: "Sukoshi" },
+        { pt: "Alto", jp: "たかい", romaji: "Takai" },
+        { pt: "Baixo", jp: "ひくい", romaji: "Hikui" }
+    ],
+    dificil: [
+        { pt: "Vencer", jp: "かつ", romaji: "Katsu" },
+        { pt: "Perder", jp: "まける", romaji: "Makeru" },
+        { pt: "Fim / Chegada", jp: "おわり", romaji: "Owari" },
+        { pt: "Esforço", jp: "どりょく", romaji: "Doryoku" },
+        { pt: "Apostar", jp: "かける", romaji: "Kakeru" },
+        { pt: "Arrogância", jp: "ごうまん", romaji: "Gouman" },
+        { pt: "Paciência", jp: "にんたい", romaji: "Nintai" },
+        { pt: "Objetivo", jp: "もくひょう", romaji: "Mokuhyou" },
+        { pt: "Promessa", jp: "やくそく", romaji: "Yakusoku" },
+        { pt: "Sucesso", jp: "せいこう", romaji: "Seikou" },
+        { pt: "Corrida", jp: "きょうそう", romaji: "Kyousou" },
+        { pt: "Desafio", jp: "ちょうせん", romaji: "Chousen" },
+        { pt: "Confiança", jp: "じしん", romaji: "Jishin" },
+        { pt: "Orgulho", jp: "ぷらいど", romaji: "Puraido" },
+        { pt: "Humildade", jp: "けんそん", romaji: "Kenson" },
+        { pt: "Perseverança", jp: "こんき", romaji: "Konki" },
+        { pt: "Arrependimento", jp: "こうかい", romaji: "Koukai" },
+        { pt: "Lição", jp: "きょうくん", romaji: "Kyoukun" },
+        { pt: "Moral", jp: "どうとく", romaji: "Doutoku" },
+        { pt: "Subestimar", jp: "かろんじる", romaji: "Karonjiru" },
+        { pt: "Passo a passo", jp: "ちゃくじつ", romaji: "Chakujitsu" },
+        { pt: "Silêncio", jp: "しずか", romaji: "Shizuka" },
+        { pt: "Barulho", jp: "おと", romaji: "Oto" },
+        { pt: "Início", jp: "はじめ", romaji: "Hajime" },
+        { pt: "Meio", jp: "ちゅうかん", romaji: "Chuukan" },
+        { pt: "Decidir", jp: "きめる", romaji: "Kimeru" },
+        { pt: "Ganhar", jp: "える", romaji: "Eru" },
+        { pt: "Alcançar", jp: "とどく", romaji: "Todoku" },
+        { pt: "Continuar", jp: "つづける", romaji: "Tsuzukeru" },
+        { pt: "Desistir", jp: "あきらめる", romaji: "Akirameru" },
+        { pt: "Coragem", jp: "ゆうき", romaji: "Yuuki" },
+        { pt: "Sorte", jp: "うん", romaji: "Un" },
+        { pt: "Destino", jp: "うんめい", romaji: "Unmei" }
+    ]
+};
 
         // Variáveis de Estado
         let currentDifficulty = 'medio';
@@ -250,15 +326,19 @@
             const isChecked = document.getElementById('romaji-toggle').checked;
             const container = document.getElementById('options-container');
             if (isChecked) {
-                container.classList.remove('hide-romaji');
-            } else {
                 container.classList.add('hide-romaji');
+            } else {
+                container.classList.remove('hide-romaji');
+                
             }
         }
 
-        function startGame(difficulty = currentDifficulty) {
-            currentDifficulty = difficulty;
-            activeVocab = vocabularios[difficulty];
+        function startGame(difficulty) {
+            // Se não for passada dificuldade, usa a atual (para reiniciar)
+            if (difficulty) {
+                currentDifficulty = difficulty;
+            }
+            activeVocab = vocabularios[currentDifficulty];
             
             screenStart.classList.add('hidden');
             screenEnd.classList.add('hidden');
@@ -290,7 +370,7 @@
             if(gameTimer) clearInterval(gameTimer);
         }
 
-        // Lógica de Movimentação e Soneca do Coelho
+        // Lógica de Movimentação e Sesta do Coelho
         function usagiLogic() {
             if (!gameActive) return;
             timeElapsed++;
@@ -318,16 +398,16 @@
                 // Meio: Dorme
                 speed = 0;
                 isSleeping = true;
-                statusText = "O coelho parou para tirar uma soneca... 💤 Essa é sua chance!";
+                statusText = "O coelho te achou lento e parou para dormir!";
                 statusColor = "text-blue-600 bg-blue-100";
             } else {
                 // Fim: Acorda assustado
                 speed = currentConfig.speedEnd;
-                statusText = "O coelho acordou e está correndo desesperado! 😱🏃";
+                statusText = "O coelho acordou e está a correr desesperado! 😱🏃 Ele nao quer perder para você!";
                 statusColor = "text-orange-600 bg-orange-100";
             }
 
-            // Atualiza status visual do coelho
+            // Atualiza estado visual do coelho
             usagiStatus.textContent = statusText;
             usagiStatus.className = `text-center py-2 font-bold transition-colors duration-300 ${statusColor}`;
             
@@ -338,17 +418,16 @@
             }
 
             usagiPos += speed;
-            if (usagiPos >= 90) usagiPos = 90; // Mantém no final antes de encerrar
+            if (usagiPos >= 90) usagiPos = 90; // Mantém no final antes de terminar
             
             updatePositions();
 
-            // Checa se o coelho ganhou
+            // Verifica se o coelho ganhou
             if (usagiPos >= 90) {
                 endGame(false);
             }
         }
 
-        function updatePositions() {
         function updatePositions() {
             kameEl.style.left = `${kamePos}%`;
             usagiEl.style.left = `${usagiPos}%`;
@@ -357,13 +436,13 @@
         function nextQuestion() {
             if (!gameActive) return;
 
-            // Escolhe uma palavra aleatória que será a correta baseada na dificuldade
+            // Escolhe uma palavra aleatória da dificuldade atual que será a correta
             const correctIndex = Math.floor(Math.random() * activeVocab.length);
             currentWord = activeVocab[correctIndex];
             
             questionWord.textContent = currentWord.pt;
 
-            // Gera 3 opções erradas
+            // Gera 3 opções erradas baseadas na dificuldade atual
             let options = [currentWord];
             while (options.length < 4) {
                 const randomWrong = activeVocab[Math.floor(Math.random() * activeVocab.length)];
@@ -372,27 +451,27 @@
                 }
             }
 
-            // Embaralha as opções
+            // Baralha as opções
             options.sort(() => Math.random() - 0.5);
 
             // Renderiza os botões
-        optionsContainer.innerHTML = '';
-        options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = "btn-option bg-white border-2 border-gray-200 text-gray-700 font-bold py-4 px-6 rounded-xl shadow-sm hover:border-blue-400 hover:bg-blue-50 focus:outline-none flex flex-col items-center justify-center text-lg";
-            
-            // Mostra japonês e romaji
-            btn.innerHTML = `
-                <span class="text-2xl mb-1">${opt.jp}</span>
-                <span class="romaji-text text-sm font-normal text-gray-500">${opt.romaji}</span>
-            `;
-            
-            btn.onclick = () => handleAnswer(opt.jp === currentWord.jp, btn);
-            optionsContainer.appendChild(btn);
-        });
-    }
+            optionsContainer.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "btn-option bg-white border-2 border-gray-200 text-gray-700 font-bold py-4 px-6 rounded-xl shadow-sm hover:border-blue-400 hover:bg-blue-50 focus:outline-none flex flex-col items-center justify-center text-lg";
+                
+                // Mostra japonês e romaji
+                btn.innerHTML = `
+                    <span class="text-2xl mb-1">${opt.jp}</span>
+                    <span class="romaji-text text-sm font-normal text-gray-500">${opt.romaji}</span>
+                `;
+                
+                btn.onclick = () => handleAnswer(opt.jp === currentWord.jp, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
 
-    function handleAnswer(isCorrect, btnElement) {
+        function handleAnswer(isCorrect, btnElement) {
             if (blockInput || !gameActive) return;
             blockInput = true;
 
@@ -438,15 +517,15 @@
 
             if (playerWon) {
                 endIcon.textContent = "🏆🐢";
-                endTitle.textContent = "Você Venceu!";
+                endTitle.textContent = "Vence!";
                 endTitle.className = "text-4xl font-black text-green-600 mb-2";
-                endMessage.textContent = "Parabéns! Assim como na história, devagar e sempre você aprendeu e venceu a corrida!";
+                endMessage.textContent = "Parabéns! Você ganhou que nem na história!";
                 screenEnd.className = "p-8 text-center flex flex-col items-center bg-green-50 h-full justify-center";
             } else {
                 endIcon.textContent = "💨🐰";
                 endTitle.textContent = "O Coelho Venceu!";
                 endTitle.className = "text-4xl font-black text-red-600 mb-2";
-                endMessage.textContent = "Ah não! O coelho acordou e cruzou a linha de chegada. Tente responder mais rápido na próxima vez!";
+                endMessage.textContent = "Oh não! O coelho acordou e cruzou a linha de chegada. Tenta responder mais rápido da próxima vez!";
                 screenEnd.className = "p-8 text-center flex flex-col items-center bg-red-50 h-full justify-center";
             }
         }
