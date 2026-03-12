@@ -2,157 +2,322 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Usagi to Kame - Aprenda Japonês</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: #87CEEB;
+            background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%);
             overflow-x: hidden;
             touch-action: manipulation;
-        }
-        
-        .track {
-            background: #a3e635;
-            border: 4px solid #4d7c0f;
-            border-right: 12px dashed #ffffff;
-            position: relative;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .character {
-            transition: left 0.3s ease-out;
+        /* Ambient Background Details */
+        .cloud {
             position: absolute;
-            transform: translateY(-50%);
-            font-size: 2.5rem;
-            filter: drop-shadow(2px 4px 2px rgba(0,0,0,0.3));
-            z-index: 10;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: floatCloud linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+        .c1 { width: 100px; height: 30px; top: 10%; left: -100px; animation-duration: 40s; }
+        .c1::before { width: 50px; height: 50px; top: -25px; left: 15px; }
+        .c1::after { width: 40px; height: 40px; top: -15px; right: 15px; }
+        .c2 { width: 80px; height: 25px; top: 25%; left: -100px; animation-duration: 30s; animation-delay: 15s; opacity: 0.5;}
+        .c2::before { width: 40px; height: 40px; top: -20px; left: 10px; }
+        .c2::after { width: 30px; height: 30px; top: -10px; right: 10px; }
+
+        @keyframes floatCloud {
+            from { transform: translateX(-150px); }
+            to { transform: translateX(120vw); }
         }
 
+        /* Main Card */
+        .game-card {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1), inset 0 0 0 4px rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Track Styling */
+        .track-container {
+            background-color: #84cc16; /* Grass green */
+            border-radius: 1rem;
+            padding: 0.75rem 0;
+            position: relative;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .track {
+            background: #b45309; /* Dirt brown */
+            height: 100px;
+            position: relative;
+            border-top: 4px solid #a16207;
+            border-bottom: 4px solid #a16207;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .track::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            background: repeating-conic-gradient(#111827 0% 25%, #ffffff 0% 50%) 50% / 15px 15px;
+            border-left: 2px solid #fcd34d;
+            box-shadow: -4px 0 10px rgba(0,0,0,0.2);
+            z-index: 5;
+        }
+
+        /* Character Sprites */
+        .character {
+            position: absolute;
+            font-size: 2.5rem;
+            filter: drop-shadow(2px 4px 2px rgba(0,0,0,0.4));
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            margin-left: 10px; /* Base offset */
+        }
+
+        /* Smooth move for Turtle, Continuous for Rabbit */
+        #kame { transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); top: 55%; }
+        #usagi { transition: left 1s linear; top: 5%; }
+
+        .bobbing { animation: bob 0.5s alternate infinite ease-in-out; }
+        .running { animation: run 0.2s alternate infinite ease-in-out; }
+
+        @keyframes bob {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+        @keyframes run {
+            from { transform: translateY(0) rotate(-5deg); }
+            to { transform: translateY(-8px) rotate(5deg); }
+        }
+
+        /* Sleep Zzz */
         .zzz {
             position: absolute;
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 900;
             color: white;
-            text-shadow: 1px 1px 0 #000;
+            text-shadow: 2px 2px 0 #3b82f6, -1px -1px 0 #1e3a8a;
             top: -20px;
-            right: -10px;
+            right: -15px;
             opacity: 0;
-            animation: floatZ 1.5s infinite;
             display: none;
+            z-index: 20;
         }
 
         .sleeping .zzz {
             display: block;
+            animation: floatZ 1.5s infinite linear;
         }
 
         @keyframes floatZ {
-            0% { opacity: 0; transform: translateY(0) scale(0.8); }
-            50% { opacity: 1; transform: translateY(-15px) scale(1.2); }
-            100% { opacity: 0; transform: translateY(-30px) scale(1); }
+            0% { opacity: 0; transform: translateY(0) scale(0.8) rotate(-10deg); }
+            50% { opacity: 1; transform: translateY(-15px) scale(1.2) rotate(10deg); }
+            100% { opacity: 0; transform: translateY(-30px) scale(1) rotate(-10deg); }
+        }
+
+        /* Custom Buttons */
+        .btn-game {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .btn-game:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0 0 transparent !important;
         }
 
         .btn-option {
-            transition: all 0.2s;
+            background: white;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 0 0 #cbd5e1;
+            color: #334155;
         }
-        
-        .btn-option:active {
-            transform: scale(0.95);
+        .btn-option:hover:not(:disabled) {
+            border-color: #93c5fd;
+            background: #eff6ff;
+            box-shadow: 0 4px 0 0 #93c5fd;
         }
 
         .btn-correct {
             background-color: #22c55e !important;
             color: white !important;
             border-color: #16a34a !important;
+            box-shadow: 0 4px 0 0 #15803d !important;
+            transform: translateY(2px);
         }
 
         .btn-wrong {
             background-color: #ef4444 !important;
             color: white !important;
             border-color: #dc2626 !important;
+            box-shadow: 0 4px 0 0 #b91c1c !important;
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
         }
 
-        .hide-romaji .romaji-text {
-            display: none;
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* Toggle */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #3b82f6;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3b82f6;
+        }
+        .toggle-checkbox {
+            right: 0;
+            z-index: 1;
+            border-color: #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .toggle-label {
+            width: 3rem;
+            height: 1.5rem;
+            background-color: #cbd5e1;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+        }
+
+        .hide-romaji .romaji-text { display: none; }
+        
+        /* Japanese Text Pop */
+        .jp-text {
+            font-family: "Hiragino Kaku Gothic ProN", "Meiryo", "Noto Sans JP", sans-serif;
+            font-weight: 800;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative">
 
-    <div class="max-w-3xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-white">
+    <!-- Ambient Clouds -->
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+
+    <div class="max-w-xl w-full bg-white/95 rounded-3xl game-card overflow-hidden border-4 border-white relative z-10">
         
-        <div class="bg-blue-600 text-white text-center py-4 relative">
-            <h1 class="text-3xl font-black tracking-wider">うさぎ と かめ</h1>
-            <h2 class="text-xl font-bold opacity-90">A Lebre e a Tartaruga</h2>
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-center py-5 relative shadow-md">
+            <h1 class="text-3xl font-black tracking-wider drop-shadow-md">うさぎ と かめ</h1>
+            <h2 class="text-lg font-bold opacity-90 mt-1">A Lebre e a Tartaruga</h2>
         </div>
 
+        <!-- TELA: INÍCIO -->
         <div id="screen-start" class="p-8 text-center flex flex-col items-center">
-            <div class="text-6xl mb-4">🐰 🏁 🐢</div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">Aprenda Japonês correndo!</h3>
-            <p class="text-gray-600 mb-6 max-w-md">
-                Você é a Tartaruga (Kame). Para avançar, traduza as palavras corretamente. 
-                Cuidado: o Coelho (Usagi) é muito rápido! Você consegue ganhar dele?
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="text-6xl animate-bounce" style="animation-delay: 0.1s">🐰</span>
+                <span class="text-5xl">⚡</span>
+                <span class="text-6xl animate-bounce" style="animation-delay: 0.3s">🐢</span>
+            </div>
+            <h3 class="text-2xl font-extrabold text-gray-800 mb-3">Aprenda Japonês Correndo!</h3>
+            <p class="text-gray-600 mb-8 max-w-sm font-semibold leading-relaxed">
+                Você é a Tartaruga (Kame). Traduza as palavras corretamente para avançar. 
+                Cuidado: o Coelho (Usagi) é veloz, mas adora tirar uma soneca!
             </p>
-            <div class="flex flex-col gap-3 w-full max-w-xs">
-                <button onclick="startGame('facil')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
-                    FÁCIL (Coelho Lento)
+            
+            <div class="flex flex-col gap-4 w-full max-w-xs">
+                <button onclick="startGame('facil')" class="btn-game bg-green-500 text-white font-black py-4 px-6 rounded-2xl text-lg shadow-[0_6px_0_0_#16a34a] hover:bg-green-400">
+                    🟢 FÁCIL (Coelho Lento)
                 </button>
-                <button onclick="startGame('medio')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
-                    MÉDIO (Normal)
+                <button onclick="startGame('medio')" class="btn-game bg-yellow-400 text-yellow-900 font-black py-4 px-6 rounded-2xl text-lg shadow-[0_6px_0_0_#ca8a04] hover:bg-yellow-300">
+                    🟡 MÉDIO (Normal)
                 </button>
-                <button onclick="startGame('dificil')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
-                    DIFÍCIL (Coelho Rápido)
+                <button onclick="startGame('dificil')" class="btn-game bg-red-500 text-white font-black py-4 px-6 rounded-2xl text-lg shadow-[0_6px_0_0_#dc2626] hover:bg-red-400">
+                    🔴 DIFÍCIL (Coelho Rápido)
                 </button>
             </div>
         </div>
 
-        <div id="screen-game" class="hidden flex flex-col">
-            <div class="p-6 bg-blue-50">
-                <div class="track h-32 rounded-lg mb-2 relative">
-                    <div id="usagi" class="character top-[30%] left-[0%]">
-                        🐰
-                        <div class="zzz">Zzz</div>
+        <!-- TELA: JOGO -->
+        <div id="screen-game" class="hidden flex flex-col h-full">
+            
+            <!-- Area da Pista -->
+            <div class="p-4 bg-sky-50 border-b-2 border-sky-100">
+                
+                <!-- Status Bar -->
+                <div class="flex justify-between items-center mb-3">
+                    <span id="diff-badge" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider text-white"></span>
+                    
+                    <!-- Toggle Romaji -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-gray-500 uppercase">Romaji</span>
+                        <div class="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="toggle" id="romaji-toggle" checked onchange="toggleRomaji()" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="romaji-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
                     </div>
-                    <div id="kame" class="character top-[70%] left-[0%]">🐢</div>
                 </div>
-                <div class="flex justify-between text-sm font-bold text-gray-500 uppercase px-2">
-                    <span>Partida</span>
-                    <span>Chegada</span>
+
+                <!-- A Pista -->
+                <div class="track-container">
+                    <div class="track">
+                        <div id="usagi" class="character">
+                            🐰<div class="zzz">Zzz</div>
+                        </div>
+                        <div id="kame" class="character bobbing">
+                            🐢
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usagi Status -->
+                <div class="mt-3 overflow-hidden rounded-xl">
+                    <div id="usagi-status" class="text-center py-2 font-black text-sm uppercase tracking-wide transition-all duration-300 transform">
+                        O coelho está se preparando...
+                    </div>
                 </div>
             </div>
 
-            <div id="usagi-status" class="text-center py-2 font-bold text-red-500 bg-red-50">
-                O coelho acordou! 🏃💨
-            </div>
-
-            <div class="p-6 bg-gray-50 flex-grow flex flex-col justify-center border-t-2 border-gray-100 relative">
-                <div class="absolute top-4 right-4 z-20">
-                    <label class="flex items-center cursor-pointer text-sm text-gray-500 font-bold bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200 hover:bg-gray-50 transition">
-                        <input type="checkbox" id="romaji-toggle" checked onchange="toggleRomaji()" class="mr-2 w-4 h-4 accent-blue-600">
-                        Romaji
-                    </label>
+            <!-- Area das Perguntas -->
+            <div class="p-6 bg-white flex-grow flex flex-col justify-center">
+                <div class="text-center mb-6">
+                    <span class="inline-block bg-blue-100 text-blue-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider mb-2">Traduza</span>
+                    <h3 id="question-word" class="text-3xl font-black text-gray-800 break-words">---</h3>
                 </div>
 
-                <div class="text-center mb-6 mt-4">
-                    <p class="text-gray-500 font-bold mb-1 uppercase tracking-wide text-sm">Como se diz em japonês:</p>
-                    <h3 id="question-word" class="text-4xl font-black text-gray-800">---</h3>
+                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Botões gerados via JS -->
                 </div>
-
-                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
             </div>
         </div>
 
-        <div id="screen-end" class="hidden p-8 text-center flex flex-col items-center bg-yellow-50">
-            <div id="end-icon" class="text-7xl mb-4">🏆</div>
-            <h2 id="end-title" class="text-4xl font-black text-gray-800 mb-2">Venceu!</h2>
-            <p id="end-message" class="text-xl text-gray-600 mb-8">Devagar e sempre</p>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button onclick="resetGame()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
-                    JOGAR NOVAMENTE
+        <!-- TELA: FIM DE JOGO -->
+        <div id="screen-end" class="hidden p-8 text-center flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50 min-h-[400px]">
+            <div id="end-icon" class="text-8xl mb-6 filter drop-shadow-lg">🏆</div>
+            <h2 id="end-title" class="text-4xl font-black mb-3">Venceu!</h2>
+            <p id="end-message" class="text-lg text-gray-600 mb-10 font-bold px-4">Devagar e sempre.</p>
+            
+            <div class="flex flex-col w-full gap-4 max-w-xs">
+                <button onclick="resetGame()" class="btn-game bg-blue-500 text-white font-black py-4 px-6 rounded-2xl text-lg shadow-[0_6px_0_0_#2563eb] hover:bg-blue-400">
+                    🔄 JOGAR NOVAMENTE
                 </button>
-                <button onclick="returnToMenu()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
-                    MENU PRINCIPAL
+                <button onclick="returnToMenu()" class="btn-game bg-gray-200 text-gray-700 font-black py-4 px-6 rounded-2xl text-lg shadow-[0_6px_0_0_#94a3b8] hover:bg-gray-100">
+                    🏠 MENU PRINCIPAL
                 </button>
             </div>
         </div>
@@ -171,30 +336,22 @@
                 { pt: "Água", jp: "みず", romaji: "Mizu" },
                 { pt: "Fogo", jp: "ひ", romaji: "Hi" },
                 { pt: "Vento", jp: "かぜ", romaji: "Kaze" },
-                { pt: "Lebre", jp: "のうさぎ", romaji: "Nousagi" },
                 { pt: "Floresta", jp: "もり", romaji: "Mori" },
                 { pt: "Flor", jp: "はな", romaji: "Hana" },
-                { pt: "Grama", jp: "くさ", romaji: "Kusa" },
-                { pt: "Pedra", jp: "いし", romaji: "Ishi" },
                 { pt: "Céu", jp: "そら", romaji: "Sora" },
-                { pt: "Nuvem", jp: "くも", romaji: "Kumo" },
                 { pt: "Pássaro", jp: "とり", romaji: "Tori" },
-                { pt: "Inseto", jp: "むし", romaji: "Mushi" },
                 { pt: "Dia", jp: "ひる", romaji: "Hiru" },
                 { pt: "Noite", jp: "よる", romaji: "Yoru" },
-                { pt: "Chão", jp: "つち", romaji: "Tsuchi" },
                 { pt: "Olho", jp: "め", romaji: "Me" },
-                { pt: "Pé", jp: "あし", romaji: "Ashi" },
+                { pt: "Pé / Perna", jp: "あし", romaji: "Ashi" },
                 { pt: "Mão", jp: "て", romaji: "Te" },
                 { pt: "Orelha", jp: "みみ", romaji: "Mimi" },
                 { pt: "Pequeno", jp: "ちいさい", romaji: "Chiisai" },
                 { pt: "Grande", jp: "おおきい", romaji: "Ookii" },
                 { pt: "Bom", jp: "いい", romaji: "Ii" },
-                { pt: "Ruim", jp: "わるい", romaji: "Warui" },
                 { pt: "Um", jp: "いち", romaji: "Ichi" },
                 { pt: "Dois", jp: "に", romaji: "Ni" },
-                { pt: "Três", jp: "さん", romaji: "San" },
-                { pt: "Verde", jp: "みどり", romaji: "Midori" }
+                { pt: "Três", jp: "さん", romaji: "San" }
             ],
             medio: [
                 { pt: "Rápido", jp: "はやい", romaji: "Hayai" },
@@ -215,29 +372,19 @@
                 { pt: "Ouvir", jp: "きく", romaji: "Kiku" },
                 { pt: "Falar", jp: "はなす", romaji: "Hanasu" },
                 { pt: "Rir", jp: "わらう", romaji: "Warau" },
-                { pt: "Chorar", jp: "なく", romaji: "Naku" },
-                { pt: "Brincar", jp: "あそぶ", romaji: "Asobu" },
-                { pt: "Sentar", jp: "すわる", romaji: "Suwaru" },
-                { pt: "Levantar", jp: "たつ", romaji: "Tatsu" },
-                { pt: "Andar", jp: "あるく", romaji: "Aruku" },
                 { pt: "Perto", jp: "ちかい", romaji: "Chikai" },
                 { pt: "Longe", jp: "とおい", romaji: "Tooi" },
                 { pt: "Hoje", jp: "きょう", romaji: "Kyou" },
                 { pt: "Amanhã", jp: "あした", romaji: "Ashita" },
                 { pt: "Agora", jp: "いま", romaji: "Ima" },
-                { pt: "Depois", jp: "あとで", romaji: "Atode" },
                 { pt: "Muito", jp: "たくさん", romaji: "Takusan" },
-                { pt: "Pouco", jp: "すこし", romaji: "Sukoshi" },
-                { pt: "Alto", jp: "たかい", romaji: "Takai" },
-                { pt: "Baixo", jp: "ひくい", romaji: "Hikui" }
+                { pt: "Pouco", jp: "すこし", romaji: "Sukoshi" }
             ],
             dificil: [
                 { pt: "Vencer", jp: "かつ", romaji: "Katsu" },
                 { pt: "Perder", jp: "まける", romaji: "Makeru" },
-                { pt: "Fim / Chegada", jp: "おわり", romaji: "Owari" },
+                { pt: "Chegada / Fim", jp: "おわり", romaji: "Owari" },
                 { pt: "Esforço", jp: "どりょく", romaji: "Doryoku" },
-                { pt: "Apostar", jp: "かける", romaji: "Kakeru" },
-                { pt: "Arrogância", jp: "ごうまん", romaji: "Gouman" },
                 { pt: "Paciência", jp: "にんたい", romaji: "Nintai" },
                 { pt: "Objetivo", jp: "もくひょう", romaji: "Mokuhyou" },
                 { pt: "Promessa", jp: "やくそく", romaji: "Yakusoku" },
@@ -249,22 +396,18 @@
                 { pt: "Humildade", jp: "けんそん", romaji: "Kenson" },
                 { pt: "Perseverança", jp: "こんき", romaji: "Konki" },
                 { pt: "Arrependimento", jp: "こうかい", romaji: "Koukai" },
-                { pt: "Lição", jp: "きょうくん", romaji: "Kyoukun" },
-                { pt: "Moral", jp: "どうとく", romaji: "Doutoku" },
+                { pt: "Moral / Lição", jp: "きょうくん", romaji: "Kyoukun" },
                 { pt: "Subestimar", jp: "かろんじる", romaji: "Karonjiru" },
                 { pt: "Passo a passo", jp: "ちゃくじつ", romaji: "Chakujitsu" },
                 { pt: "Silêncio", jp: "しずか", romaji: "Shizuka" },
                 { pt: "Barulho", jp: "おと", romaji: "Oto" },
-                { pt: "Início", jp: "はじめ", romaji: "Hajime" },
-                { pt: "Meio", jp: "ちゅうかん", romaji: "Chuukan" },
                 { pt: "Decidir", jp: "きめる", romaji: "Kimeru" },
-                { pt: "Ganhar", jp: "える", romaji: "Eru" },
                 { pt: "Alcançar", jp: "とどく", romaji: "Todoku" },
                 { pt: "Continuar", jp: "つづける", romaji: "Tsuzukeru" },
                 { pt: "Desistir", jp: "あきらめる", romaji: "Akirameru" },
                 { pt: "Coragem", jp: "ゆうき", romaji: "Yuuki" },
                 { pt: "Sorte", jp: "うん", romaji: "Un" },
-                { pt: "Destino", jp: "うんme", romaji: "Unmei" }
+                { pt: "Destino", jp: "うんめい", romaji: "Unmei" }
             ]
         };
 
@@ -275,8 +418,11 @@
         let gameActive = false;
         let currentWord = null;
         let gameTimer = null;
+        let answerTimeout = null;
         let timeElapsed = 0;
         let blockInput = false;
+
+        const maxPos = 85; // % max distance to stop cleanly before the finish line UI
 
         const screenStart = document.getElementById('screen-start');
         const screenGame = document.getElementById('screen-game');
@@ -286,6 +432,7 @@
         const usagiStatus = document.getElementById('usagi-status');
         const questionWord = document.getElementById('question-word');
         const optionsContainer = document.getElementById('options-container');
+        const diffBadge = document.getElementById('diff-badge');
 
         function toggleRomaji() {
             const isChecked = document.getElementById('romaji-toggle').checked;
@@ -296,9 +443,25 @@
             }
         }
 
+        function setDifficultyBadge(diff) {
+            diffBadge.classList.remove('bg-green-500', 'bg-yellow-400', 'bg-red-500', 'text-yellow-900');
+            if (diff === 'facil') {
+                diffBadge.textContent = "Fácil";
+                diffBadge.classList.add('bg-green-500');
+            } else if (diff === 'medio') {
+                diffBadge.textContent = "Médio";
+                diffBadge.classList.add('bg-yellow-400', 'text-yellow-900');
+            } else {
+                diffBadge.textContent = "Difícil";
+                diffBadge.classList.add('bg-red-500');
+            }
+        }
+
         function startGame(difficulty) {
             currentDifficulty = difficulty || currentDifficulty;
             activeVocab = vocabularios[currentDifficulty];
+            
+            setDifficultyBadge(currentDifficulty);
             
             screenStart.classList.add('hidden');
             screenEnd.classList.add('hidden');
@@ -310,12 +473,18 @@
             gameActive = true;
             blockInput = false;
             
+            usagiEl.classList.remove('sleeping', 'running');
+            
             toggleRomaji();
             updatePositions();
             nextQuestion();
             
             if(gameTimer) clearInterval(gameTimer);
+            if(answerTimeout) clearTimeout(answerTimeout);
+            
+            // Loop runs every 1 second
             gameTimer = setInterval(usagiLogic, 1000);
+            usagiLogic(); // Initial state update
         }
 
         function usagiLogic() {
@@ -324,42 +493,51 @@
 
             let speed = 0;
             let statusText = "";
-            let statusColor = "";
+            let statusClasses = "";
             let isSleeping = false;
+            let isRunning = false;
 
+            // Ajuste para garantir que a posição do coelho pare sempre ~42.5 (a metade exata de maxPos que é 85)
             const config = {
-                facil: { sprint: 4, wakeup: 26, speedStart: 3, speedEnd: 3 },
-                medio: { sprint: 6, wakeup: 22, speedStart: 7, speedEnd: 6 },
-                dificil: { sprint: 8, wakeup: 16, speedStart: 10, speedEnd: 8 }
+                facil: { sprint: 10, wakeup: 28, speedStart: 4.25, speedEnd: 4 },
+                medio: { sprint: 7, wakeup: 20, speedStart: 6, speedEnd: 7 },
+                dificil: { sprint: 5, wakeup: 14, speedStart: 8.5, speedEnd: 10 }
             };
             const currentConfig = config[currentDifficulty];
 
             if (timeElapsed <= currentConfig.sprint) {
                 speed = currentConfig.speedStart;
                 statusText = "O coelho disparou na frente! 🏃💨";
-                statusColor = "text-red-600 bg-red-100";
+                statusClasses = "bg-red-100 text-red-600";
+                isRunning = true;
             } else if (timeElapsed <= currentConfig.wakeup) {
                 speed = 0;
                 isSleeping = true;
                 statusText = "O coelho parou para dormir... 💤";
-                statusColor = "text-blue-600 bg-blue-100";
+                statusClasses = "bg-blue-100 text-blue-700";
             } else {
                 speed = currentConfig.speedEnd;
-                statusText = "O coelho acordou desesperado! 😱🏃";
-                statusColor = "text-orange-600 bg-orange-100";
+                statusText = "O coelho acordou desesperado! 😱";
+                statusClasses = "bg-orange-100 text-orange-700 scale-105";
+                isRunning = true;
             }
 
             usagiStatus.textContent = statusText;
-            usagiStatus.className = `text-center py-2 font-bold transition-colors duration-300 ${statusColor}`;
+            usagiStatus.className = `text-center py-2 font-black text-sm uppercase tracking-wide transition-all duration-300 transform rounded-lg ${statusClasses}`;
             
-            if (isSleeping) usagiEl.classList.add('sleeping');
-            else usagiEl.classList.remove('sleeping');
+            if (isSleeping) {
+                usagiEl.classList.add('sleeping');
+                usagiEl.classList.remove('running');
+            } else {
+                usagiEl.classList.remove('sleeping');
+                if (isRunning) usagiEl.classList.add('running');
+            }
 
             usagiPos += speed;
-            if (usagiPos >= 90) usagiPos = 90;
+            if (usagiPos >= maxPos) usagiPos = maxPos;
             
             updatePositions();
-            if (usagiPos >= 90) endGame(false);
+            if (usagiPos >= maxPos) endGame(false);
         }
 
         function updatePositions() {
@@ -369,83 +547,106 @@
 
         function nextQuestion() {
             if (!gameActive) return;
+            
+            // Pick the correct word
             const correctIndex = Math.floor(Math.random() * activeVocab.length);
             currentWord = activeVocab[correctIndex];
             questionWord.textContent = currentWord.pt;
 
-            let options = [currentWord];
-            while (options.length < 4) {
-                const random = activeVocab[Math.floor(Math.random() * activeVocab.length)];
-                if (!options.find(o => o.jp === random.jp)) options.push(random);
-            }
-            options.sort(() => Math.random() - 0.5);
+            // Gather 3 wrong options safely
+            const otherWords = activeVocab.filter(w => w.jp !== currentWord.jp);
+            const shuffledOthers = otherWords.sort(() => 0.5 - Math.random());
+            const options = [currentWord, ...shuffledOthers.slice(0, 3)].sort(() => 0.5 - Math.random());
 
             optionsContainer.innerHTML = '';
             options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "btn-option bg-white border-2 border-gray-200 text-gray-700 font-bold py-4 px-6 rounded-xl shadow-sm hover:border-blue-400 focus:outline-none flex flex-col items-center justify-center text-lg";
-                btn.innerHTML = `<span class="text-2xl mb-1">${opt.jp}</span><span class="romaji-text text-sm font-normal text-gray-500">${opt.romaji}</span>`;
-                btn.onclick = () => handleAnswer(opt.jp === currentWord.jp, btn);
+                btn.className = "btn-game btn-option rounded-2xl p-4 flex flex-col items-center justify-center font-bold outline-none";
+                btn.innerHTML = `<span class="jp-text text-3xl mb-1">${opt.jp}</span><span class="romaji-text text-sm font-semibold opacity-70">${opt.romaji}</span>`;
+                btn.onclick = () => handleAnswer(opt.jp === currentWord.jp, btn, options);
                 optionsContainer.appendChild(btn);
             });
         }
 
-        function handleAnswer(isCorrect, btnElement) {
+        function handleAnswer(isCorrect, btnElement, allOptions) {
             if (blockInput || !gameActive) return;
             blockInput = true;
+
+            // Disable all buttons immediately
+            Array.from(optionsContainer.children).forEach(childBtn => {
+                childBtn.disabled = true;
+                childBtn.classList.remove('hover:translate-y-[2px]');
+            });
 
             if (isCorrect) {
                 btnElement.classList.add('btn-correct');
                 kamePos += 10;
+                
+                // Keep kame visual inside bounds
+                if (kamePos >= maxPos) kamePos = maxPos; 
                 updatePositions();
-                if (kamePos >= 90) {
-                    setTimeout(() => endGame(true), 500);
+                
+                if (kamePos >= maxPos) {
+                    answerTimeout = setTimeout(() => endGame(true), 400);
                     return;
                 }
             } else {
                 btnElement.classList.add('btn-wrong');
-                Array.from(optionsContainer.children).forEach(childBtn => {
-                    if (childBtn.innerHTML.includes(currentWord.jp)) {
+                // Highlight correct answer
+                Array.from(optionsContainer.children).forEach((childBtn, index) => {
+                    if (allOptions[index].jp === currentWord.jp) {
                         childBtn.classList.add('btn-correct');
+                        childBtn.classList.remove('btn-option');
                     }
                 });
             }
 
-            setTimeout(() => {
+            answerTimeout = setTimeout(() => {
                 blockInput = false;
                 nextQuestion();
-            }, 1000);
+            }, 1200);
         }
 
         function endGame(playerWon) {
+            if(!gameActive) return; // Prevent double trigger
             gameActive = false;
             clearInterval(gameTimer);
-            screenGame.classList.add('hidden');
-            screenEnd.classList.remove('hidden');
+            if(answerTimeout) clearTimeout(answerTimeout);
 
-            const icon = document.getElementById('end-icon');
-            const title = document.getElementById('end-title');
-            const msg = document.getElementById('end-message');
+            setTimeout(() => {
+                screenGame.classList.add('hidden');
+                screenEnd.classList.remove('hidden');
 
-            if (playerWon) {
-                icon.textContent = "🏆🐢";
-                title.textContent = "Você Venceu!";
-                title.className = "text-4xl font-black text-green-600 mb-2";
-                msg.textContent = "Devagar e sempre! Você superou o coelho.";
-            } else {
-                icon.textContent = "💨🐰";
-                title.textContent = "O Coelho Ganhou!";
-                title.className = "text-4xl font-black text-red-600 mb-2";
-                msg.textContent = "O coelho acordou a tempo. Tente ser mais rápido na próxima!";
-            }
+                const icon = document.getElementById('end-icon');
+                const title = document.getElementById('end-title');
+                const msg = document.getElementById('end-message');
+
+                if (playerWon) {
+                    icon.innerHTML = "🐢🏆";
+                    title.textContent = "Você Venceu!";
+                    title.className = "text-5xl font-black text-green-500 mb-3 drop-shadow-sm";
+                    msg.textContent = "A persistência é a chave! Você provou isso hoje.";
+                } else {
+                    icon.innerHTML = "🐰💨";
+                    title.textContent = "Você Perdeu...";
+                    title.className = "text-5xl font-black text-red-500 mb-3 drop-shadow-sm";
+                    msg.textContent = "O coelho acordou a tempo. Tente ser mais rápido na próxima!";
+                }
+            }, 500); // Small delay to let the final animation settle
         }
 
-        function resetGame() { startGame(currentDifficulty); }
+        function resetGame() { 
+            startGame(currentDifficulty); 
+        }
+        
         function returnToMenu() {
+            gameActive = false;
+            clearInterval(gameTimer);
+            if(answerTimeout) clearTimeout(answerTimeout);
+            
             screenGame.classList.add('hidden');
             screenEnd.classList.add('hidden');
             screenStart.classList.remove('hidden');
-            clearInterval(gameTimer);
         }
     </script>
 </body>
