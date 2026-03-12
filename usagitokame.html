@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usagi to Kame - Aprenda Japonês</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #87CEEB; /* Sky blue */
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+        
+        .track {
+            background: #a3e635; /* Lime green grass */
+            border: 4px solid #4d7c0f;
+            border-right: 12px dashed #ffffff; /* Finish line */
+            position: relative;
+        }
+
+        .character {
+            transition: left 0.3s ease-out;
+            position: absolute;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            filter: drop-shadow(2px 4px 2px rgba(0,0,0,0.3));
+            z-index: 10;
+        }
+
+        .zzz {
+            position: absolute;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 0 #000;
+            top: -20px;
+            right: -10px;
+            opacity: 0;
+            animation: floatZ 1.5s infinite;
+            display: none;
+        }
+
+        .sleeping .zzz {
+            display: block;
+        }
+
+        @keyframes floatZ {
+            0% { opacity: 0; transform: translateY(0) scale(0.8); }
+            50% { opacity: 1; transform: translateY(-15px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-30px) scale(1); }
+        }
+
+        .btn-option {
+            transition: all 0.2s;
+        }
+        
+        .btn-option:active {
+            transform: scale(0.95);
+        }
+
+        .btn-correct {
+            background-color: #22c55e !important;
+            color: white !important;
+            border-color: #16a34a !important;
+        }
+
+        .btn-wrong {
+            background-color: #ef4444 !important;
+            color: white !important;
+            border-color: #dc2626 !important;
+        }
+
+        .hide-romaji .romaji-text {
+            display: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Container Principal -->
+    <div class="max-w-3xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-white">
+        
+        <!-- Header -->
+        <div class="bg-blue-600 text-white text-center py-4 relative">
+            <h1 class="text-3xl font-black tracking-wider">うさぎ と かめ</h1>
+            <h2 class="text-xl font-bold opacity-90">A Lebre e a Tartaruga</h2>
+        </div>
+
+        <!-- Tela de Início -->
+        <div id="screen-start" class="p-8 text-center flex flex-col items-center">
+            <div class="text-6xl mb-4">🐰 🏁 🐢</div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Aprenda Japonês Correndo!</h3>
+            <p class="text-gray-600 mb-6 max-w-md">
+                Você é a Tartaruga (Kame). Para avançar, traduza as palavras corretamente. 
+                Cuidado: o Coelho (Usagi) é muito rápido, mas pode ser que ele pare para tirar uma soneca!
+            </p>
+            <div class="flex flex-col gap-3 w-full max-w-xs">
+                <button onclick="startGame('facil')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
+                    FÁCIL (Coelho Lento)
+                </button>
+                <button onclick="startGame('medio')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
+                    MÉDIO (Normal)
+                </button>
+                <button onclick="startGame('dificil')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
+                    DIFÍCIL (Coelho Rápido)
+                </button>
+            </div>
+        </div>
+
+        <!-- Tela do Jogo -->
+        <div id="screen-game" class="hidden flex flex-col">
+            
+            <!-- Pista de Corrida -->
+            <div class="p-6 bg-blue-50">
+                <div class="track h-32 rounded-lg mb-2 relative">
+                    <!-- Coelho -->
+                    <div id="usagi" class="character top-[30%] left-[0%]">
+                        🐰
+                        <div class="zzz">Zzz</div>
+                    </div>
+                    <!-- Tartaruga -->
+                    <div id="kame" class="character top-[70%] left-[0%]">🐢</div>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-gray-500 uppercase px-2">
+                    <span>Partida</span>
+                    <span>Chegada</span>
+                </div>
+            </div>
+
+            <!-- Status do Coelho -->
+            <div id="usagi-status" class="text-center py-2 font-bold text-red-500 bg-red-50">
+                O coelho está correndo rápido! 🏃💨
+            </div>
+
+            <!-- Quiz -->
+            <div class="p-6 bg-gray-50 flex-grow flex flex-col justify-center border-t-2 border-gray-100 relative">
+                
+                <!-- Botão Toggle Romaji -->
+                <div class="absolute top-4 right-4">
+                    <label class="flex items-center cursor-pointer text-sm text-gray-500 font-bold bg-white px-3 py-1 rounded-full shadow-sm border border-gray-200 hover:bg-gray-50 transition">
+                        <input type="checkbox" id="romaji-toggle" checked onchange="toggleRomaji()" class="mr-2 w-4 h-4 accent-blue-600">
+                        Romaji
+                    </label>
+                </div>
+
+                <div class="text-center mb-6 mt-4">
+                    <p class="text-gray-500 font-bold mb-1 uppercase tracking-wide text-sm">Como se diz em japonês:</p>
+                    <h3 id="question-word" class="text-4xl font-black text-gray-800">Coelho</h3>
+                </div>
+
+                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Botões gerados via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Fim -->
+        <div id="screen-end" class="hidden p-8 text-center flex flex-col items-center bg-yellow-50">
+            <div id="end-icon" class="text-7xl mb-4">🏆</div>
+            <h2 id="end-title" class="text-4xl font-black text-gray-800 mb-2">Você Venceu!</h2>
+            <p id="end-message" class="text-xl text-gray-600 mb-8">Devagar e sempre vence a corrida.</p>
+            
+            <div class="bg-white p-4 rounded-xl shadow-md mb-8 w-full max-w-sm">
+                <p class="font-bold text-gray-700">Palavras revisadas:</p>
+                <p class="text-sm text-gray-500 mt-2">Continue praticando para memorizar o Hiragana e o Romaji!</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="resetGame()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
+                    JOGAR NOVAMENTE
+                </button>
+                <button onclick="returnToMenu()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform transition hover:scale-105 active:scale-95">
+                    MENU PRINCIPAL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script do Jogo -->
+    <script>
+        // Vocabulário do Jogo (Separado por Dificuldade)
+        const vocabularios = {
+            facil: [
+                { pt: "Coelho", jp: "うさぎ", romaji: "Usagi" },
+                { pt: "Tartaruga", jp: "かめ", romaji: "Kame" },
+                { pt: "Árvore", jp: "き", romaji: "Ki" },
+                { pt: "Rio", jp: "かわ", romaji: "Kawa" },
+                { pt: "Montanha", jp: "やま", romaji: "Yama" },
+                { pt: "Sol", jp: "たいよう", romaji: "Taiyou" },
+                { pt: "Lua", jp: "つき", romaji: "Tsuki" },
+                { pt: "Água", jp: "みず", romaji: "Mizu" },
+                { pt: "Fogo", jp: "ひ", romaji: "Hi" },
+                { pt: "Vento", jp: "かぜ", romaji: "Kaze" }
+            ],
+            medio: [
+                { pt: "Rápido", jp: "はやい", romaji: "Hayai" },
+                { pt: "Devagar", jp: "おそい", romaji: "Osoi" },
+                { pt: "Caminho", jp: "みち", romaji: "Michi" },
+                { pt: "Amigo", jp: "ともだち", romaji: "Tomodachi" },
+                { pt: "Correr", jp: "はしる", romaji: "Hashiru" },
+                { pt: "Dormir", jp: "ねむる", romaji: "Nemuru" },
+                { pt: "Descansar", jp: "やすむ", romaji: "Yasumu" },
+                { pt: "Comer", jp: "たべる", romaji: "Taberu" },
+                { pt: "Beber", jp: "のむ", romaji: "Nomu" },
+                { pt: "Ir", jp: "いく", romaji: "Iku" }
+            ],
+            dificil: [
+                { pt: "Vencer", jp: "かつ", romaji: "Katsu" },
+                { pt: "Perder", jp: "まける", romaji: "Makeru" },
+                { pt: "Fim / Chegada", jp: "おわり", romaji: "Owari" },
+                { pt: "Esforço", jp: "どりょく", romaji: "Doryoku" },
+                { pt: "Apostar", jp: "かける", romaji: "Kakeru" },
+                { pt: "Arrogância", jp: "ごうまん", romaji: "Gouman" },
+                { pt: "Paciência", jp: "にんたい", romaji: "Nintai" },
+                { pt: "Objetivo", jp: "もくひょう", romaji: "Mokuhyou" },
+                { pt: "Promessa", jp: "やくそく", romaji: "Yakusoku" },
+                { pt: "Sucesso", jp: "せいこう", romaji: "Seikou" }
+            ]
+        };
+
+        // Variáveis de Estado
+        let currentDifficulty = 'medio';
+        let activeVocab = [];
+        let kamePos = 0;
+        let usagiPos = 0;
+        let gameActive = false;
+        let currentWord = null;
+        let gameTimer = null;
+        let timeElapsed = 0;
+        let blockInput = false;
+
+        // Elementos DOM
+        const screenStart = document.getElementById('screen-start');
+        const screenGame = document.getElementById('screen-game');
+        const screenEnd = document.getElementById('screen-end');
+        const kameEl = document.getElementById('kame');
+        const usagiEl = document.getElementById('usagi');
+        const usagiStatus = document.getElementById('usagi-status');
+        const questionWord = document.getElementById('question-word');
+        const optionsContainer = document.getElementById('options-container');
+        
+        const endIcon = document.getElementById('end-icon');
+        const endTitle = document.getElementById('end-title');
+        const endMessage = document.getElementById('end-message');
+
+        function toggleRomaji() {
+            const isChecked = document.getElementById('romaji-toggle').checked;
+            const container = document.getElementById('options-container');
+            if (isChecked) {
+                container.classList.remove('hide-romaji');
+            } else {
+                container.classList.add('hide-romaji');
+            }
+        }
+
+        function startGame(difficulty = currentDifficulty) {
+            currentDifficulty = difficulty;
+            activeVocab = vocabularios[difficulty];
+            
+            screenStart.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenGame.classList.remove('hidden');
+            
+            kamePos = 0;
+            usagiPos = 0;
+            timeElapsed = 0;
+            gameActive = true;
+            blockInput = false;
+            
+            toggleRomaji(); // Inicializa o estado do Romaji
+            updatePositions();
+            nextQuestion();
+            
+            // Loop do Coelho (Acontece a cada 1 segundo)
+            if(gameTimer) clearInterval(gameTimer);
+            gameTimer = setInterval(usagiLogic, 1000);
+        }
+
+        function resetGame() {
+            startGame(currentDifficulty);
+        }
+
+        function returnToMenu() {
+            screenGame.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenStart.classList.remove('hidden');
+            if(gameTimer) clearInterval(gameTimer);
+        }
+
+        // Lógica de Movimentação e Soneca do Coelho
+        function usagiLogic() {
+            if (!gameActive) return;
+            timeElapsed++;
+
+            let speed = 0;
+            let statusText = "";
+            let statusColor = "";
+            let isSleeping = false;
+
+            // Configurações baseadas na dificuldade
+            const config = {
+                facil: { sprint: 4, wakeup: 26, speedStart: 4, speedEnd: 4 }, // Corre pouco e devagar, dorme muito
+                medio: { sprint: 6, wakeup: 22, speedStart: 7, speedEnd: 6 }, // Normal
+                dificil: { sprint: 8, wakeup: 16, speedStart: 10, speedEnd: 8 } // Corre muito e rápido, dorme pouco
+            };
+            const currentConfig = config[currentDifficulty];
+
+            // Script de corrida do Coelho
+            if (timeElapsed <= currentConfig.sprint) {
+                // Início: corre rápido
+                speed = currentConfig.speedStart;
+                statusText = "O coelho disparou na frente! 🏃💨";
+                statusColor = "text-red-600 bg-red-100";
+            } else if (timeElapsed > currentConfig.sprint && timeElapsed <= currentConfig.wakeup) {
+                // Meio: Dorme
+                speed = 0;
+                isSleeping = true;
+                statusText = "O coelho parou para tirar uma soneca... 💤 Essa é sua chance!";
+                statusColor = "text-blue-600 bg-blue-100";
+            } else {
+                // Fim: Acorda assustado
+                speed = currentConfig.speedEnd;
+                statusText = "O coelho acordou e está correndo desesperado! 😱🏃";
+                statusColor = "text-orange-600 bg-orange-100";
+            }
+
+            // Atualiza status visual do coelho
+            usagiStatus.textContent = statusText;
+            usagiStatus.className = `text-center py-2 font-bold transition-colors duration-300 ${statusColor}`;
+            
+            if (isSleeping) {
+                usagiEl.classList.add('sleeping');
+            } else {
+                usagiEl.classList.remove('sleeping');
+            }
+
+            usagiPos += speed;
+            if (usagiPos >= 90) usagiPos = 90; // Mantém no final antes de encerrar
+            
+            updatePositions();
+
+            // Checa se o coelho ganhou
+            if (usagiPos >= 90) {
+                endGame(false);
+            }
+        }
+
+        function updatePositions() {
+        function updatePositions() {
+            kameEl.style.left = `${kamePos}%`;
+            usagiEl.style.left = `${usagiPos}%`;
+        }
+
+        function nextQuestion() {
+            if (!gameActive) return;
+
+            // Escolhe uma palavra aleatória que será a correta baseada na dificuldade
+            const correctIndex = Math.floor(Math.random() * activeVocab.length);
+            currentWord = activeVocab[correctIndex];
+            
+            questionWord.textContent = currentWord.pt;
+
+            // Gera 3 opções erradas
+            let options = [currentWord];
+            while (options.length < 4) {
+                const randomWrong = activeVocab[Math.floor(Math.random() * activeVocab.length)];
+                if (!options.includes(randomWrong)) {
+                    options.push(randomWrong);
+                }
+            }
+
+            // Embaralha as opções
+            options.sort(() => Math.random() - 0.5);
+
+            // Renderiza os botões
+        optionsContainer.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = "btn-option bg-white border-2 border-gray-200 text-gray-700 font-bold py-4 px-6 rounded-xl shadow-sm hover:border-blue-400 hover:bg-blue-50 focus:outline-none flex flex-col items-center justify-center text-lg";
+            
+            // Mostra japonês e romaji
+            btn.innerHTML = `
+                <span class="text-2xl mb-1">${opt.jp}</span>
+                <span class="romaji-text text-sm font-normal text-gray-500">${opt.romaji}</span>
+            `;
+            
+            btn.onclick = () => handleAnswer(opt.jp === currentWord.jp, btn);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(isCorrect, btnElement) {
+            if (blockInput || !gameActive) return;
+            blockInput = true;
+
+            // Remove classes hover para evitar conflito visual
+            btnElement.classList.remove('hover:border-blue-400', 'hover:bg-blue-50');
+
+            if (isCorrect) {
+                // Acertou! Tartaruga anda 10% (precisa de 9-10 acertos para ganhar)
+                btnElement.classList.add('btn-correct');
+                kamePos += 10;
+                if (kamePos >= 90) kamePos = 90;
+                updatePositions();
+                
+                if (kamePos >= 90) {
+                    setTimeout(() => endGame(true), 500);
+                    return;
+                }
+            } else {
+                // Errou
+                btnElement.classList.add('btn-wrong');
+                // Revela a correta
+                Array.from(optionsContainer.children).forEach(childBtn => {
+                    if (childBtn.innerHTML.includes(currentWord.jp)) {
+                        childBtn.classList.remove('hover:border-blue-400', 'hover:bg-blue-50');
+                        childBtn.classList.add('btn-correct');
+                    }
+                });
+            }
+
+            // Aguarda um instante e vai para a próxima
+            setTimeout(() => {
+                blockInput = false;
+                nextQuestion();
+            }, 1000);
+        }
+
+        function endGame(playerWon) {
+            gameActive = false;
+            clearInterval(gameTimer);
+            
+            screenGame.classList.add('hidden');
+            screenEnd.classList.remove('hidden');
+
+            if (playerWon) {
+                endIcon.textContent = "🏆🐢";
+                endTitle.textContent = "Você Venceu!";
+                endTitle.className = "text-4xl font-black text-green-600 mb-2";
+                endMessage.textContent = "Parabéns! Assim como na história, devagar e sempre você aprendeu e venceu a corrida!";
+                screenEnd.className = "p-8 text-center flex flex-col items-center bg-green-50 h-full justify-center";
+            } else {
+                endIcon.textContent = "💨🐰";
+                endTitle.textContent = "O Coelho Venceu!";
+                endTitle.className = "text-4xl font-black text-red-600 mb-2";
+                endMessage.textContent = "Ah não! O coelho acordou e cruzou a linha de chegada. Tente responder mais rápido na próxima vez!";
+                screenEnd.className = "p-8 text-center flex flex-col items-center bg-red-50 h-full justify-center";
+            }
+        }
+    </script>
+</body>
+</html>
